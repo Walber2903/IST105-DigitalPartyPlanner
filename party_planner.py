@@ -61,6 +61,7 @@ def main():
 
     print("<html><body>")
     display_party_items()
+    print(f"<strong>Enter item indices separated by commas (e.g., 0, 2):</strong> {', '.join(input_indices)}<br><br>")
     print(f"<strong>Selected Items:</strong> {', '.join(selected_names)}<br>")
 
     base_code = calculate_base_code(input_indices)
@@ -68,11 +69,19 @@ def main():
         print("<strong>Error:</strong> Invalid input or no valid items selected.<br>")
         return
 
-    formula = " & ".join([item_dict[i] for i in input_indices if i in item_dict])
-    print(f"<strong>Base Party Code:</strong> {' & '.join(input_indices)} = {base_code}<br>")
+    values_used = [item_dict[i] for i in input_indices if i in item_dict]
+    bitwise_formula = " & ".join(values_used)
+    print(f"<strong>Base Party Code:</strong> {bitwise_formula} = {base_code}<br>")
 
     final_code, message = adjust_code(base_code)
-    print(f"<strong>Adjusted Party Code:</strong> {final_code}<br>")
+    if base_code == 0:
+        adjusted_formula = f"{base_code} + 5"
+    elif base_code > 5:
+        adjusted_formula = f"{base_code} - 2"
+    else:
+        adjusted_formula = f"{base_code}"
+
+    print(f"<strong>Adjusted Party Code:</strong> {adjusted_formula} = {final_code}<br>")
     print(f"<strong>Final Party Code:</strong> {final_code}<br>")
     print(f"<strong>Message:</strong> {message}<br>")
     print("</body></html>")
